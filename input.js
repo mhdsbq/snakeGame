@@ -2,27 +2,10 @@ let inputDirection = { x: 0, y: 0 };
 let lastInputDirection = { x: 0, y: 0 };
 
 window.addEventListener("keydown", (e) => {
-  switch (e.key) {
-    case "ArrowUp":
-      if (lastInputDirection.y !== 0) return;
-      inputDirection = { x: 0, y: -1 };
-      break;
-    case "ArrowDown":
-      if (lastInputDirection.y !== 0) return;
-      inputDirection = { x: 0, y: 1 };
-      break;
-    case "ArrowLeft":
-      if (lastInputDirection.x !== 0) return;
-      inputDirection = { x: -1, y: 0 };
-      break;
-    case "ArrowRight":
-      if (lastInputDirection.x !== 0) return;
-      inputDirection = { x: 1, y: 0 };
-      break;
-  }
+  setInputDirection(e.key);
 });
 
-let touchStartX, touchStartY, touchMoveX, touchMoveY;
+let touchStartX, touchStartY, touchMoveX, touchMoveY, touchDirection;
 
 document.addEventListener(
   "touchstart",
@@ -42,39 +25,47 @@ document.addEventListener(
   },
   { passive: false }
 );
+
 document.addEventListener("touchend", (e) => {
   const dx = touchStartX - touchMoveX;
   const dy = touchStartY - touchMoveY;
-  console.log(dx, dy);
-  if (getCoefficient(dx) > getCoefficient(dy) && getCoefficient(dx) > 100) {
+  if (abs(dx) > abs(dy) && abs(dx) > 100) {
     if (dx < 0) {
-      console.log("right");
-      if (lastInputDirection.x !== 0) return;
-      inputDirection = { x: 1, y: 0 };
+      touchDirection = "ArrowRight";
     } else {
-      console.log("left");
-      if (lastInputDirection.x !== 0) return;
-      inputDirection = { x: -1, y: 0 };
+      touchDirection = "ArrowLeft";
     }
-  } else if (
-    getCoefficient(dy) > getCoefficient(dx) &&
-    getCoefficient(dy) > 100
-  ) {
+  } else if (abs(dy) > abs(dx) && abs(dy) > 100) {
     if (dy < 0) {
-      console.log("down");
-      if (lastInputDirection.y !== 0) return;
-      inputDirection = { x: 0, y: 1 };
+      touchDirection = "ArrowDown";
     } else {
-      console.log("up");
-      if (lastInputDirection.y !== 0) return;
-      inputDirection = { x: 0, y: -1 };
+      touchDirection = "ArrowUp";
     }
   }
+  setInputDirection(touchDirection);
 });
 
-function getCoefficient(number) {
-  return number < 0 ? -number : number;
+function setInputDirection(direction) {
+  switch (direction) {
+    case "ArrowUp":
+      if (lastInputDirection.y !== 0) return;
+      inputDirection = { x: 0, y: -1 };
+      break;
+    case "ArrowDown":
+      if (lastInputDirection.y !== 0) return;
+      inputDirection = { x: 0, y: 1 };
+      break;
+    case "ArrowLeft":
+      if (lastInputDirection.x !== 0) return;
+      inputDirection = { x: -1, y: 0 };
+      break;
+    case "ArrowRight":
+      if (lastInputDirection.x !== 0) return;
+      inputDirection = { x: 1, y: 0 };
+      break;
+  }
 }
+
 export function getInputDirection() {
   lastInputDirection = inputDirection;
   return inputDirection;
