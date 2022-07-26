@@ -18,7 +18,7 @@ let gameOver = false;
 function main(currentTime) {
   if (gameOver) {
     if (confirm(`Game over, score:${getScore()} press ok to restart`)) {
-      window.location = "/";
+      window.location = "/snakeGame";
     }
     return;
   }
