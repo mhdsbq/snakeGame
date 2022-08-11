@@ -29,13 +29,13 @@ document.addEventListener(
 document.addEventListener("touchend", (e) => {
   const dx = touchStartX - touchMoveX;
   const dy = touchStartY - touchMoveY;
-  if (abs(dx) > abs(dy) && abs(dx) > 100) {
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 100) {
     if (dx < 0) {
       touchDirection = "ArrowRight";
     } else {
       touchDirection = "ArrowLeft";
     }
-  } else if (abs(dy) > abs(dx) && abs(dy) > 100) {
+  } else if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 100) {
     if (dy < 0) {
       touchDirection = "ArrowDown";
     } else {
